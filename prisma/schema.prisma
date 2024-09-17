@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  // Campos
+  id       Int    @unique @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+
+  // Relações
+  received_emails Email_User[] @relation("email_correspondants")
+  sent_emails     Email[]      @relation("email_sender")
+
+  // Timestamps
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt()
+  finished_at DateTime?
+}
+
+enum EMAIL_SEND_TYPE {
+  CC
+  CCO
+  TO
+}
+
+model Email {
+  // Campos
+  id       Int    @unique @default(autoincrement())
+  email    String @unique
+  name     String
+  password String
+
+  // FK
+  user_id Int
+
+  // Relações
+  users Email_User[] @relation("email_correspondants")
+  from  User         @relation("email_sender", fields: [user_id], references: [id])
+
+  // Timestamps
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt()
+  finished_at DateTime?
+}
+
+model Email_User {
+  // Campos
+  id           Int     @unique @default(autoincrement())
+  is_favorited Boolean @default(false)
+
+  // FK
+  email_id Int
+  user_id  Int
+
+  // Relações
+  email Email @relation("email_correspondants", fields: [email_id], references: [id])
+  user  User  @relation("email_correspondants", fields: [user_id], references: [id])
+
+  // Timestamps
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt()
+  finished_at DateTime?
+}
