@@ -12,14 +12,23 @@ enum Themes {
   LIGHT
 }
 
+enum Colors {
+  ORANGE
+  BLUE
+  RED
+  PURPLE
+  YELLOW
+  GREEN
+}
+
 model User {
   // Campos
-  id       Int     @unique @default(autoincrement())
-  email    String  @unique
+  id       Int    @unique @default(autoincrement())
+  email    String @unique
   name     String
   password String
-  nickname String?
-  theme    Themes
+  color    Colors @default(BLUE)
+  theme    Themes @default(LIGHT)
 
   // Relações
   received_emails Email_User[] @relation("email_correspondants")
@@ -31,18 +40,11 @@ model User {
   finished_at DateTime?
 }
 
-enum EMAIL_SEND_TYPE {
-  CC
-  CCO
-  TO
-}
-
 model Email {
   // Campos
-  id       Int    @unique @default(autoincrement())
-  email    String @unique
-  name     String
-  password String
+  id      Int    @unique @default(autoincrement())
+  subject String
+  body    String
 
   // FK
   user_id Int
@@ -57,10 +59,17 @@ model Email {
   finished_at DateTime?
 }
 
+enum EMAIL_SEND_TYPE {
+  TO
+  CC
+  CCO
+}
+
 model Email_User {
   // Campos
-  id           Int     @unique @default(autoincrement())
-  is_favorited Boolean @default(false)
+  id           Int             @unique @default(autoincrement())
+  is_favorited Boolean         @default(false)
+  type         EMAIL_SEND_TYPE @default(TO)
 
   // FK
   email_id Int
