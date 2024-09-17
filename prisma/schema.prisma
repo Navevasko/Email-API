@@ -7,12 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Themes {
+  DARK
+  LIGHT
+}
+
 model User {
   // Campos
-  id       Int    @unique @default(autoincrement())
-  email    String @unique
+  id       Int     @unique @default(autoincrement())
+  email    String  @unique
   name     String
   password String
+  nickname String?
+  theme    Themes
 
   // Relações
   received_emails Email_User[] @relation("email_correspondants")
