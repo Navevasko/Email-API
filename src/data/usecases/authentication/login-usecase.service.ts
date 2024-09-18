@@ -1,19 +1,18 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import type { AuthenticationArgs } from "@domain/models/authentication/authentication-args";
 import { FindUserByEmailRepository } from "@infra/repositories/users/find-user-by-email-and-password-repository.service";
 import * as bcrypt from "bcrypt";
-import constants from "@main/config/constants";
+import type { FormattedUserData } from "@domain/models/users/formatted-user-by-id-data";
 
 @Injectable()
 export class LoginUsecase {
 	@Inject(FindUserByEmailRepository)
 	private findUserByEmailAndPasswordRepository: FindUserByEmailRepository;
 
-	@Inject(JwtService)
-	private jwtService: JwtService;
-
-	async execute({ email, password }: AuthenticationArgs): Promise<string> {
+	async execute({
+		email,
+		password,
+	}: AuthenticationArgs): Promise<FormattedUserData> {
 		const user = await this.findUserByEmailAndPasswordRepository.execute(email);
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -21,6 +20,12 @@ export class LoginUsecase {
 			throw new UnauthorizedException("O usuário não foi encontrado.");
 		}
 
-		return this.jwtService.sign(user, { secret: constants().JWT_SECRET });
+		return {
+			idUser: user.id,
+			nome: user.name,
+			tema: user.theme,
+			email: user.email,
+			cor: user.color,
+		};
 	}
 }
