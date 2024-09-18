@@ -2,6 +2,7 @@ import { CreateUserRepository } from "@infra/repositories/users/create-user-repo
 import { JwtService } from "@nestjs/jwt";
 import { Inject, Injectable } from "@nestjs/common";
 import type { Prisma, User } from "@prisma/client";
+import * as bcrypt from "bcrypt";
 import constants from "@main/config/constants";
 
 @Injectable()
@@ -10,6 +11,11 @@ export class CreateUserUsecase {
 	private createUserRepository: CreateUserRepository;
 
 	async execute(data: Prisma.UserCreateInput): Promise<void> {
+		data.password = await bcrypt.hash(
+			data.password,
+			Number(constants().BCRYPT_SALT),
+		);
+
 		await this.createUserRepository.execute(data);
 	}
 }
