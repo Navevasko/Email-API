@@ -57,15 +57,14 @@ model Email {
   bcc               String    @default("")
 
   idUser Int
-
-  // Relações
-  users Email_User[] @relation("email_correspondants")
-  from  User         @relation("email_sender", fields: [idUser], references: [id])
+  from   User @relation("email_sender", fields: [idUser], references: [id])
 
   // Timestamps
   created_at  DateTime  @default(now())
   updated_at  DateTime? @updatedAt()
   finished_at DateTime?
+
+  Email_User Email_User[] @relation("email_correspondants")
 }
 
 enum EMAIL_SEND_TYPE {
@@ -75,17 +74,17 @@ enum EMAIL_SEND_TYPE {
 }
 
 model Email_User {
-  id           Int             @id @default(autoincrement())
-  is_favorited Boolean         @default(false)
-  type         EMAIL_SEND_TYPE @default(TO)
+  id          Int             @id @default(autoincrement())
+  type        EMAIL_SEND_TYPE @default(TO)
+  isFavorited Boolean         @default(false)
 
   // FK
-  email_id Int
-  user_id  Int
+  idEmail Int
+  idUser  Int
 
   // Relações
-  email Email @relation("email_correspondants", fields: [email_id], references: [id])
-  user  User  @relation("email_correspondants", fields: [user_id], references: [id])
+  email Email @relation("email_correspondants", fields: [idEmail], references: [id])
+  user  User  @relation("email_correspondants", fields: [idUser], references: [id])
 
   // Timestamps
   created_at  DateTime  @default(now())

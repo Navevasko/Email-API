@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsBoolean, IsInt, IsDateString, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsInt, IsDateString, IsEnum, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 enum Priority {
@@ -10,6 +10,17 @@ enum EmailType {
   TO = 'TO',
   CC = 'CC',
   BCC = 'BCC'
+}
+
+class EmailUserDto {
+  @IsEnum(EmailType)
+  type: EmailType;
+
+  @IsBoolean()
+  isFavorited: boolean;
+
+  @IsInt()
+  idUser: number;
 }
 
 export class SendEmailDto {
@@ -62,6 +73,10 @@ export class SendEmailDto {
   @IsString()
   bcc: string;
 
+  @ValidateNested()
+  @Type(() => EmailUserDto)
+  emailUser: EmailUserDto;
+
   @IsInt()
-  idUser: number;
+  to: number;
 }

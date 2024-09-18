@@ -1,10 +1,11 @@
-import { EmailRepository } from 'src/infra/repositories/email.repository';
+import { Inject } from '@nestjs/common';
+import { EmailRepository } from 'src/infra/repositories/emails/email.repository';
 
-  export class FindAllEmailsUseCase {
-    constructor(private readonly emailRepository: EmailRepository) {}
-  
-    findAll() {
-      return this.emailRepository.findAll();
-    }
+export class FindAllEmailsUseCase {
+  @Inject(EmailRepository)
+  private emailRepository: EmailRepository;
+
+  execute(userId: number) {
+    return this.emailRepository.findAll(userId);
   }
-  
+}
