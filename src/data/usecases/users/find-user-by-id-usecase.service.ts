@@ -7,7 +7,7 @@ export class FindUserByIdUsecase {
 	@Inject(FindUserByIdRepository)
 	private findUserByIdRepository: FindUserByIdRepository;
 
-	async execute(id: number): Promise<FormattedUserData> {
+	async execute(id: string): Promise<FormattedUserData> {
 		const user = await this.findUserByIdRepository.execute(id);
 
 		const formatted_user = {

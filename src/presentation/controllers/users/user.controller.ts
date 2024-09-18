@@ -13,7 +13,7 @@ export class UserController {
 	private findUserByIdUsecase: FindUserByIdUsecase;
 	
 	@Get("/:id")
-	async findById(@Param("id", ParseIntPipe) id: number) {
+	async findById(@Param("id") id: string) {
 		const user = await this.findUserByIdUsecase.execute(id)
 		return success({ payload: user})
 	}
@@ -32,7 +32,7 @@ export class UserController {
 	private updateUserUsecase: UpdateUserUsecase;
 
 	@Patch("/:id")
-	async update(@Param("id", ParseIntPipe) id: number, @Body() data: UpdateUserDto): Promise<HttpResponse> {
+	async update(@Param("id") id: string, @Body() data: UpdateUserDto): Promise<HttpResponse> {
 		await this.updateUserUsecase.execute({ id, data });
 
 		return success({});

@@ -7,7 +7,7 @@ export class FindUserByIdRepository {
 	@Inject(PrismaService)
 	private prisma: PrismaService;
 
-	async execute(id: number): Promise<User> {
+	async execute(id: string): Promise<User> {
 		return await this.prisma.user.findFirstOrThrow({
 			where: {
 				AND: {

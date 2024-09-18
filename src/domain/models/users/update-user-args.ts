@@ -1,6 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
 export interface UpdateUserArgs {
-	id: number;
+	id: string;
 	data: Prisma.UserUpdateInput;
 }
