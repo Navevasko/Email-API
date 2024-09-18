@@ -14,7 +14,7 @@ enum Themes {
 
 model User {
   // Campos
-  id       Int     @unique @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   email    String  @unique
   name     String
   password String
@@ -38,18 +38,27 @@ enum EMAIL_SEND_TYPE {
 }
 
 model Email {
-  // Campos
-  id       Int    @unique @default(autoincrement())
-  email    String @unique
-  name     String
-  password String
+  id                Int       @id @default(autoincrement())
+  emailRemente      String
+  nomeRemetente     String
+  assunto           String
+  body              String
+  dataEnvio         DateTime  @default(now())
+  prioridade        String    @default("NORMAL")
+  idMessageResponse String    @default("")
+  type              String    @default("DE")
+  dataRecebimento   DateTime?
+  statusLeitura     Boolean   @default(false)
+  boxFolder         String    @default("SENT")
+  para              String    @default("")
+  cc                String    @default("")
+  bcc               String    @default("")
 
-  // FK
-  user_id Int
+  idUser Int
 
   // Relações
   users Email_User[] @relation("email_correspondants")
-  from  User         @relation("email_sender", fields: [user_id], references: [id])
+  from  User         @relation("email_sender", fields: [idUser], references: [id])
 
   // Timestamps
   created_at  DateTime  @default(now())
@@ -59,7 +68,7 @@ model Email {
 
 model Email_User {
   // Campos
-  id           Int     @unique @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   is_favorited Boolean @default(false)
 
   // FK
