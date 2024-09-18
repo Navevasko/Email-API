@@ -15,17 +15,17 @@ export class UserController {
 	@Get("/:id")
 	async findById(@Param("id") id: string) {
 		const user = await this.findUserByIdUsecase.execute(id)
-		return success({ payload: user})
+		return user
 	}
 	
 	@Inject(CreateUserUsecase)
 	private createUserUsecase: CreateUserUsecase;
 
 	@Post()
-	async create(@Body() data: CreateUserDto): Promise<HttpResponse> {
+	async create(@Body() data: CreateUserDto): Promise<any> {
 		const payload = await this.createUserUsecase.execute(data);
 
-		return success({ payload });
+		return payload;
 	}
 
 	@Inject(UpdateUserUsecase)

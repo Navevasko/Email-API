@@ -11,9 +11,9 @@ export class AuthenticationController {
 	private loginUsecase: LoginUsecase
 
 	@Post()
-	async login(@Body() data: LoginDTO): Promise<HttpResponse> {
-		const token = await this.loginUsecase.execute(data)
+	async login(@Body() data: LoginDTO): Promise<any> {
+		const payload = await this.loginUsecase.execute(data)
 
-		return success({ payload: { token } });
+		return payload;
 	}
 }
