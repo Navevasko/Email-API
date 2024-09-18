@@ -29,8 +29,6 @@ export class SendEmailDto {
   @IsString()
   body: string;
 
-  @IsDateString()
-  @Type(() => Date)
   dataEnvio: Date;
 
   @IsEnum(Priority)
@@ -62,6 +60,6 @@ export class SendEmailDto {
   @IsString()
   bcc: string;
 
-  @IsInt()
+  @IsString()
   idFromUser: string;
 }

@@ -3,9 +3,10 @@ import { FindUserByEmailRepository } from './find-user-by-email-and-password-rep
 import { CreateUserRepository } from './create-user-repository.service';
 import { FindUserByIdRepository } from './find-user-by-id-repository.service';
 import { UpdateUserRepository } from './update-user-repository.service';
+import { FindOneUserByEmailRepository } from './find-user-by-email-respository.service';
 
 @Module({
-  providers: [FindUserByEmailRepository, FindUserByIdRepository, CreateUserRepository, UpdateUserRepository],
-  exports: [FindUserByEmailRepository, FindUserByIdRepository, CreateUserRepository, UpdateUserRepository]
+  providers: [FindUserByEmailRepository, FindUserByIdRepository, CreateUserRepository, UpdateUserRepository, FindOneUserByEmailRepository],
+  exports: [FindUserByEmailRepository, FindUserByIdRepository, CreateUserRepository, UpdateUserRepository, FindOneUserByEmailRepository]
 })
 export class UserRepositoriesModule {}
