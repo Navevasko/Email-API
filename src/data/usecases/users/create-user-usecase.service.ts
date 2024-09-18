@@ -9,9 +9,6 @@ export class CreateUserUsecase {
 	@Inject(CreateUserRepository)
 	private createUserRepository: CreateUserRepository;
 
-	@Inject(JwtService)
-	private jwtService: JwtService;
-
 	async execute(data: Prisma.UserCreateInput): Promise<void> {
 		await this.createUserRepository.execute(data);
 	}
