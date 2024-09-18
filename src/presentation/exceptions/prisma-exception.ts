@@ -1,6 +1,6 @@
 import type { HttpResponse } from "@domain/models/base/http";
 import { PRISMA_EXCEPTION_CODES } from "@domain/models/enums/prisma-exception-codes";
-import { notFound } from "@main/utils/api-response";
+import { notFound, serverError } from "@main/utils/api-response";
 import { type ArgumentsHost, Catch } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
 import { Prisma } from "@prisma/client";
@@ -23,8 +23,18 @@ export class PrismaExceptionFilter extends BaseExceptionFilter {
 					}),
 				);
 
+			case PRISMA_EXCEPTION_CODES.UNIQUE_EXISTS: {
+				const target = exception.meta.target as string;
+				const model = exception.meta.modelName as string;
+				return res.status(400).json(
+					notFound({
+						message: `O ${target.match(/^[^_]+_(.+)_[^_]+$/)[1]} enviado da tabela ${model} já existe.`,
+					}),
+				);
+			}
+
 			default:
-				console.log(exception.code);
+				return res.status(500).json(serverError());
 		}
 	}
 }

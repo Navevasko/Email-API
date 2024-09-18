@@ -38,8 +38,43 @@ export function notFound({
 			success: false,
 			message: message ?? "Instância não encontrada",
 			payload: {},
+			errors: errors,
+		},
+		headers,
+	};
+}
+
+export interface ServerErrorParams {
+	message?: string;
+	headers?: object;
+	errors: object[];
+}
+export function badRequest({
+	message,
+	errors,
+	headers,
+}: ServerErrorParams): HttpResponse {
+	return {
+		statusCode: 400,
+		body: {
+			success: false,
+			message: message ?? "Parâmetros inválidos",
+			payload: {},
 			errors: [],
 		},
 		headers,
+	};
+}
+
+export function serverError(): HttpResponse {
+	return {
+		statusCode: 500,
+		body: {
+			success: false,
+			message:
+				"Desculpe, ocorreu um erro no servidor. Tente novamente mais tarde",
+			payload: {},
+			errors: [],
+		},
 	};
 }
