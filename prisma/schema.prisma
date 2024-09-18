@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Themes {
+  DARK
+  LIGHT
+}
+
+enum Colors {
+  ORANGE
+  BLUE
+  RED
+  PURPLE
+  YELLOW
+  GREEN
+}
+
+model User {
+  // Campos
+  id       String @id @unique @default(uuid())
+  email    String @unique
+  password String
+  color    Colors @default(BLUE)
+  theme    Themes @default(LIGHT)
+
+  // Relações
+  sent_emails    Email[] @relation("email_sender")
+  receive_emails Email[] @relation("email_receiver")
+
+  // Timestamps
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt()
+  finished_at DateTime?
+}
+
+model Email {
+  id                String    @id @unique @default(uuid())
+  emailRemente      String
+  nomeRemetente     String
+  assunto           String
+  body              String
+  dataEnvio         DateTime  @default(now())
+  prioridade        String    @default("NORMAL")
+  idMessageResponse String    @default("")
+  type              String    @default("DE")
+  dataRecebimento   DateTime?
+  statusLeitura     Boolean   @default(false)
+  boxFolder         String    @default("SENT")
+  para              String    @default("")
+  cc                String    @default("")
+  bcc               String    @default("")
+  spam              Boolean   @default(false)
+  isFavorited       Boolean   @default(false)
+
+  idFromUser String
+  from       User   @relation("email_sender", fields: [idFromUser], references: [id])
+
+  idToUser String
+  to       User   @relation("email_receiver", fields: [idToUser], references: [id])
+
+  // Timestamps
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt()
+  finished_at DateTime?
+}
+
+enum EMAIL_SEND_TYPE {
+  TO
+  CC
+  CCO
+}
