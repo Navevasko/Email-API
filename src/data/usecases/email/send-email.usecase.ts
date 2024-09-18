@@ -1,4 +1,7 @@
+import { FindOneUserByEmailRepository } from '@infra/repositories/users/find-user-by-email-respository.service';
 import { Inject, Injectable } from '@nestjs/common';
+import { connect } from 'http2';
+import { from } from 'rxjs';
 import { EmailRepository } from 'src/infra/repositories/emails/email.repository';
 import { SendEmailDto } from 'src/presentation/dtos/email/send-email.dto';
 
@@ -6,6 +9,9 @@ import { SendEmailDto } from 'src/presentation/dtos/email/send-email.dto';
 export class SendEmailUseCase {
   @Inject(EmailRepository)
   private emailRepository: EmailRepository;
+
+  @Inject(FindOneUserByEmailRepository)
+  private findOneUSerByEmailRepository: FindOneUserByEmailRepository;
 
   async execute(sendEmailDto: SendEmailDto) {
     const lastEmail = await this.emailRepository.findLast(sendEmailDto.idFromUser);
@@ -20,6 +26,8 @@ export class SendEmailUseCase {
       if (currentDate.getTime() - emailSentDate.getTime() < fiveMinutesInMilliseconds) isSpam = true;
     }
 
-    return this.emailRepository.create({ ...sendEmailDto, spam: isSpam });
+    const receiver = await this.findOneUSerByEmailRepository.execute(sendEmailDto.para);
+
+    return this.emailRepository.create({ ...sendEmailDto, spam: isSpam, idToUser: receiver.id });
   }
 }

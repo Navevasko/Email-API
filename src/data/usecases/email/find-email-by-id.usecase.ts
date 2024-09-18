@@ -5,7 +5,7 @@ export class FindEmailByIdUseCase {
   @Inject(EmailRepository)
   private emailRepository: EmailRepository;
 
-  execute(id: number) {
+  execute(id: string) {
     return this.emailRepository.findOne(id);
   }
 }

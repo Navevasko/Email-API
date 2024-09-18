@@ -5,7 +5,7 @@ export class FavoriteEmailUseCase {
   @Inject(EmailRepository)
   private emailRepository: EmailRepository;
 
-  execute(emailId: number, isFavorited: boolean) {
+  execute(emailId: string, isFavorited: boolean) {
     return this.emailRepository.favorite(emailId, isFavorited);
   }
 }

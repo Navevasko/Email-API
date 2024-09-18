@@ -28,29 +28,29 @@ export class EmailController {
 
   @Get()
   findAll(@Query('userId') userId: string) {
-    return this.findAllEmailsUseCase.execute(+userId);
+    return this.findAllEmailsUseCase.execute(userId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.findEmailByIdUseCase.execute(+id);
+    return this.findEmailByIdUseCase.execute(id);
   }
 
   @Get('/received/:id')
   findReceived(@Param('id') id: string, @Query('isFavorited') isFavorited: string) {
     const isFavoritedBool = isFavorited === 'true';
-    return this.favoriteReceivedEmailUsecase.execute(+id, isFavoritedBool);
+    return this.favoriteReceivedEmailUsecase.execute(id, isFavoritedBool);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
-    return this.deleteEmailUseCase.execute(+id);
+    return this.deleteEmailUseCase.execute(id);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   async favorite(@Param('id') id: string, @Body('isFavorited') isFavorited: boolean) {
-    await this.favoriteEmailUsecase.execute(+id, isFavorited);
+    await this.favoriteEmailUsecase.execute(id, isFavorited);
   }
 }

@@ -23,7 +23,7 @@ enum Colors {
 
 model User {
   // Campos
-  id       Int    @id @default(autoincrement())
+  id       String @id @unique @default(uuid())
   email    String @unique
   password String
   color    Colors @default(BLUE)
@@ -40,7 +40,7 @@ model User {
 }
 
 model Email {
-  id                Int       @id @default(autoincrement())
+  id                String    @id @unique @default(uuid())
   emailRemente      String
   nomeRemetente     String
   assunto           String
@@ -58,11 +58,11 @@ model Email {
   spam              Boolean   @default(false)
   isFavorited       Boolean   @default(false)
 
-  idFromUser Int
-  from       User @relation("email_sender", fields: [idFromUser], references: [id])
+  idFromUser String
+  from       User   @relation("email_sender", fields: [idFromUser], references: [id])
 
-  idToUser Int
-  to       User @relation("email_receiver", fields: [idToUser], references: [id])
+  idToUser String
+  to       User   @relation("email_receiver", fields: [idToUser], references: [id])
 
   // Timestamps
   created_at  DateTime  @default(now())

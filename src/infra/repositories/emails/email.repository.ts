@@ -13,7 +13,7 @@ export class EmailRepository {
     });
   }
 
-  async findLast(idFromUser: number) {
+  async findLast(idFromUser: string) {
     return await this.prisma.email.findFirst({
       where: {
         idFromUser: idFromUser
@@ -24,7 +24,7 @@ export class EmailRepository {
     });
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: string) {
     const where: Prisma.EmailWhereInput = userId ? { idFromUser: userId } : {};
 
     return await this.prisma.email.findMany({
@@ -32,26 +32,26 @@ export class EmailRepository {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.prisma.email.findUnique({
       where: { id }
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return await this.prisma.email.delete({
       where: { id }
     });
   }
 
-  async favorite(id: number, isFavorited: boolean) {
+  async favorite(id: string, isFavorited: boolean) {
     return await this.prisma.email.update({
       where: { id: id },
       data: { isFavorited: isFavorited }
     });
   }
 
-  async findAllReceived(userId: number, isFavorited?: boolean) {
+  async findAllReceived(userId: string, isFavorited?: boolean) {
     const where: any = { idToUser: userId };
 
     if (isFavorited !== undefined) {

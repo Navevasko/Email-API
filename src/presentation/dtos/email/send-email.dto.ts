@@ -15,7 +15,7 @@ enum EmailType {
 export class SendEmailDto {
   @IsInt()
   @IsOptional()
-  id?: number;
+  id?: string;
 
   @IsString()
   emailRemente: string;
@@ -63,8 +63,5 @@ export class SendEmailDto {
   bcc: string;
 
   @IsInt()
-  idFromUser: number;
-
-  @IsInt()
-  idToUser: number;
+  idFromUser: string;
 }
