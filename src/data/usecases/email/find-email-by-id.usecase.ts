@@ -1,11 +1,11 @@
-import { Inject } from "@nestjs/common";
-import { EmailRepository } from "src/infra/repositories/emails/email.repository";
+import { Inject } from '@nestjs/common';
+import { EmailRepository } from 'src/infra/repositories/emails/email.repository';
 
 export class FindEmailByIdUseCase {
-	@Inject(EmailRepository)
-	private emailRepository: EmailRepository;
+  @Inject(EmailRepository)
+  private emailRepository: EmailRepository;
 
-	execute(id: string) {
-		return this.emailRepository.findOne(id);
-	}
+  execute(id: string) {
+    return this.emailRepository.findOne(id);
+  }
 }

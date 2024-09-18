@@ -1,77 +1,67 @@
-import {
-	IsString,
-	IsOptional,
-	IsBoolean,
-	IsInt,
-	IsDateString,
-	IsEnum,
-} from "class-validator";
-import { Type } from "class-transformer";
+import { IsString, IsOptional, IsBoolean, IsInt, IsDateString, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer';
 
 enum Priority {
-	NORMAL = "NORMAL",
+  NORMAL = 'NORMAL'
 }
 
 enum EmailType {
-	FROM = "DE",
-	TO = "TO",
-	CC = "CC",
-	BCC = "BCC",
+  FROM = 'DE',
+  TO = 'TO',
+  CC = 'CC',
+  BCC = 'BCC'
 }
 
 export class SendEmailDto {
-	@IsString()
-	@IsOptional()
-	id?: string;
+  @IsInt()
+  @IsOptional()
+  id?: string;
 
-	@IsString()
-	emailRemente: string;
+  @IsString()
+  emailRemente: string;
 
-	@IsString()
-	nomeRemetente: string;
+  @IsString()
+  nomeRemetente: string;
 
-	@IsString()
-	assunto: string;
+  @IsString()
+  assunto: string;
 
-	@IsString()
-	body: string;
+  @IsString()
+  body: string;
 
-	@IsDateString()
-	@Type(() => Date)
-	dataEnvio: Date;
+  @IsDateString()
+  @Type(() => Date)
+  dataEnvio: Date;
 
-	@IsEnum(Priority)
-	prioridade: Priority;
+  @IsEnum(Priority)
+  prioridade: Priority;
 
-	@IsString()
-	idMessageResponse: string;
+  @IsString()
+  idMessageResponse: string;
 
-	@IsEnum(EmailType)
-	type: EmailType;
+  @IsEnum(EmailType)
+  type: EmailType;
 
-	@IsDateString()
-	@IsOptional()
-	@Type(() => Date)
-	dataRecebimento?: Date;
+  @IsDateString()
+  @IsOptional()
+  @Type(() => Date)
+  dataRecebimento?: Date;
 
-	@IsBoolean()
-	statusLeitura: boolean;
+  @IsBoolean()
+  statusLeitura: boolean;
 
-	@IsString()
-	boxFolder: string;
+  @IsString()
+  boxFolder: string;
 
-	@IsString()
-	para: string;
+  @IsString()
+  para: string;
 
-	@IsString()
-	cc: string;
+  @IsString()
+  cc: string;
 
-	@IsString()
-	bcc: string;
+  @IsString()
+  bcc: string;
 
-	@IsString()
-	idFromUser: string;
-
-	@IsString()
-	idToUser: string;
+  @IsInt()
+  idFromUser: string;
 }

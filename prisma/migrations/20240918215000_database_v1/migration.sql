@@ -1,11 +1,10 @@
 -- CreateTable
 CREATE TABLE `User` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `nickname` VARCHAR(191) NULL,
-    `theme` ENUM('DARK', 'LIGHT') NOT NULL,
+    `color` ENUM('ORANGE', 'BLUE', 'RED', 'PURPLE', 'YELLOW', 'GREEN') NOT NULL DEFAULT 'BLUE',
+    `theme` ENUM('DARK', 'LIGHT') NOT NULL DEFAULT 'LIGHT',
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
     `finished_at` DATETIME(3) NULL,
@@ -16,7 +15,7 @@ CREATE TABLE `User` (
 
 -- CreateTable
 CREATE TABLE `Email` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `emailRemente` VARCHAR(191) NOT NULL,
     `nomeRemetente` VARCHAR(191) NOT NULL,
     `assunto` VARCHAR(191) NOT NULL,
@@ -31,20 +30,10 @@ CREATE TABLE `Email` (
     `para` VARCHAR(191) NOT NULL DEFAULT '',
     `cc` VARCHAR(191) NOT NULL DEFAULT '',
     `bcc` VARCHAR(191) NOT NULL DEFAULT '',
-    `idUser` INTEGER NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updated_at` DATETIME(3) NULL,
-    `finished_at` DATETIME(3) NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Email_User` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `is_favorited` BOOLEAN NOT NULL DEFAULT false,
-    `email_id` INTEGER NOT NULL,
-    `user_id` INTEGER NOT NULL,
+    `spam` BOOLEAN NOT NULL DEFAULT false,
+    `isFavorited` BOOLEAN NOT NULL DEFAULT false,
+    `idFromUser` VARCHAR(191) NOT NULL,
+    `idToUser` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
     `finished_at` DATETIME(3) NULL,
@@ -53,10 +42,7 @@ CREATE TABLE `Email_User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Email` ADD CONSTRAINT `Email_idUser_fkey` FOREIGN KEY (`idUser`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Email` ADD CONSTRAINT `Email_idFromUser_fkey` FOREIGN KEY (`idFromUser`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Email_User` ADD CONSTRAINT `Email_User_email_id_fkey` FOREIGN KEY (`email_id`) REFERENCES `Email`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Email_User` ADD CONSTRAINT `Email_User_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Email` ADD CONSTRAINT `Email_idToUser_fkey` FOREIGN KEY (`idToUser`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
