@@ -4,6 +4,7 @@ import { PrismaModule } from "@main/config/prisma/prisma.module";
 import constants from "@main/config/constants";
 import { AuthenticationModule } from "@presentation/controllers/authentication/authentication.module";
 import { UserModule } from "@presentation/controllers/users/user.module";
+import { EmailModule } from "@presentation/controllers/email/email.module";
 
 @Module({
 	imports: [
@@ -11,6 +12,7 @@ import { UserModule } from "@presentation/controllers/users/user.module";
 		PrismaModule,
 		AuthenticationModule,
 		UserModule,
+		EmailModule,
 	],
 })
 export class AppModule {}

@@ -23,16 +23,15 @@ enum Colors {
 
 model User {
   // Campos
-  id       Int    @unique @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   email    String @unique
-  name     String
   password String
   color    Colors @default(BLUE)
   theme    Themes @default(LIGHT)
 
   // Relações
-  received_emails Email_User[] @relation("email_correspondants")
-  sent_emails     Email[]      @relation("email_sender")
+  sent_emails    Email[] @relation("email_sender")
+  receive_emails Email[] @relation("email_receiver")
 
   // Timestamps
   created_at  DateTime  @default(now())
@@ -41,17 +40,29 @@ model User {
 }
 
 model Email {
-  // Campos
-  id      Int    @unique @default(autoincrement())
-  subject String
-  body    String
+  id                Int       @id @default(autoincrement())
+  emailRemente      String
+  nomeRemetente     String
+  assunto           String
+  body              String
+  dataEnvio         DateTime  @default(now())
+  prioridade        String    @default("NORMAL")
+  idMessageResponse String    @default("")
+  type              String    @default("DE")
+  dataRecebimento   DateTime?
+  statusLeitura     Boolean   @default(false)
+  boxFolder         String    @default("SENT")
+  para              String    @default("")
+  cc                String    @default("")
+  bcc               String    @default("")
+  spam              Boolean   @default(false)
+  isFavorited       Boolean   @default(false)
 
-  // FK
-  user_id Int
+  idFromUser Int
+  from       User @relation("email_sender", fields: [idFromUser], references: [id])
 
-  // Relações
-  users Email_User[] @relation("email_correspondants")
-  from  User         @relation("email_sender", fields: [user_id], references: [id])
+  idToUser Int
+  to       User @relation("email_receiver", fields: [idToUser], references: [id])
 
   // Timestamps
   created_at  DateTime  @default(now())
@@ -63,24 +74,4 @@ enum EMAIL_SEND_TYPE {
   TO
   CC
   CCO
-}
-
-model Email_User {
-  // Campos
-  id           Int             @unique @default(autoincrement())
-  is_favorited Boolean         @default(false)
-  type         EMAIL_SEND_TYPE @default(TO)
-
-  // FK
-  email_id Int
-  user_id  Int
-
-  // Relações
-  email Email @relation("email_correspondants", fields: [email_id], references: [id])
-  user  User  @relation("email_correspondants", fields: [user_id], references: [id])
-
-  // Timestamps
-  created_at  DateTime  @default(now())
-  updated_at  DateTime? @updatedAt()
-  finished_at DateTime?
 }

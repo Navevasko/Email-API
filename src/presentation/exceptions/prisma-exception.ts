@@ -22,6 +22,12 @@ export class PrismaExceptionFilter extends BaseExceptionFilter {
 						message,
 					}),
 				);
+			case PRISMA_EXCEPTION_CODES.FOREIGIN_KEY:
+				return res.status(400).json(
+					notFound({
+						message,
+					}),
+				);
 
 			case PRISMA_EXCEPTION_CODES.UNIQUE_EXISTS: {
 				const target = exception.meta.target as string;
