@@ -23,9 +23,9 @@ export class UserController {
 
 	@Post()
 	async create(@Body() data: CreateUserDto): Promise<HttpResponse> {
-		await this.createUserUsecase.execute(data);
+		const payload = await this.createUserUsecase.execute(data);
 
-		return success({});
+		return success({ payload });
 	}
 
 	@Inject(UpdateUserUsecase)

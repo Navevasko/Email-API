@@ -7,9 +7,12 @@ export class CreateUserRepository {
 	@Inject(PrismaService)
 	private prisma: PrismaService;
 
-	async execute(data: Prisma.UserCreateInput): Promise<void> {
-		await this.prisma.user.create({
+	async execute(data: Prisma.UserCreateInput): Promise<{ id: string }> {
+		return await this.prisma.user.create({
 			data,
+			select: {
+				id: true,
+			},
 		});
 	}
 }

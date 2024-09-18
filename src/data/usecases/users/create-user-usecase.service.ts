@@ -10,12 +10,14 @@ export class CreateUserUsecase {
 	@Inject(CreateUserRepository)
 	private createUserRepository: CreateUserRepository;
 
-	async execute(data: Prisma.UserCreateInput): Promise<void> {
+	async execute(data: Prisma.UserCreateInput): Promise<{ id: string }> {
 		data.password = await bcrypt.hash(
 			data.password,
 			Number(constants().BCRYPT_SALT),
 		);
 
-		await this.createUserRepository.execute(data);
+		const new_user = await this.createUserRepository.execute(data);
+
+		return new_user;
 	}
 }
