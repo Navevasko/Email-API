@@ -1,0 +1,3 @@
+export enum PRISMA_EXCEPTION_CODES {
+	NOT_FOUND = "P2025",
+}
