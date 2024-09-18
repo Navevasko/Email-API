@@ -7,6 +7,7 @@ import { EmailRepositoriesModule } from '@infra/repositories/emails/email-reposi
 import { SendEmailUseCase } from './send-email.usecase';
 import { FavoriteEmailUseCase } from './favorite-email.usecase';
 import { FindAllReceivedEmailsUseCase } from './find-all-received-email.usecase';
+import { UserRepositoriesModule } from '@infra/repositories/users/user-repositories.module';
 
 @Module({
   providers: [
@@ -25,6 +26,6 @@ import { FindAllReceivedEmailsUseCase } from './find-all-received-email.usecase'
     FavoriteEmailUseCase,
     FindAllReceivedEmailsUseCase
   ],
-  imports: [EmailRepositoriesModule]
+  imports: [EmailRepositoriesModule, UserRepositoriesModule]
 })
 export class EmailUseCaseModule {}

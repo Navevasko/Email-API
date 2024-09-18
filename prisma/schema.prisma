@@ -23,7 +23,7 @@ enum Colors {
 
 model User {
   // Campos
-  id       String @id @default(uuid())
+  id       String @id @unique @default(uuid())
   name     String
   email    String @unique
   password String
@@ -41,7 +41,7 @@ model User {
 }
 
 model Email {
-  id                String    @id @default(uuid())
+  id                String    @id @unique @default(uuid())
   emailRemente      String
   nomeRemetente     String
   assunto           String

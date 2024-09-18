@@ -39,7 +39,7 @@ export class EmailController {
   @Get('/received/:id')
   findReceived(@Param('id') id: string, @Query('isFavorited') isFavorited: string) {
     const isFavoritedBool = isFavorited === 'true';
-    return this.favoriteReceivedEmailUsecase.execute(+id, isFavoritedBool);
+    return this.favoriteReceivedEmailUsecase.execute(id, isFavoritedBool);
   }
 
   @Delete(':id')
