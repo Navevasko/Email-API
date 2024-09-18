@@ -5,7 +5,7 @@ export class FindAllReceivedEmailsUseCase {
   @Inject(EmailRepository)
   private emailRepository: EmailRepository;
 
-  execute(userId: number) {
-    return this.emailRepository.findAllReceived(userId);
+  execute(userId: number, isFavorited?: boolean) {
+    return this.emailRepository.findAllReceived(userId, isFavorited);
   }
 }

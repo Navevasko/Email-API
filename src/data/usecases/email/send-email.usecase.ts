@@ -7,7 +7,19 @@ export class SendEmailUseCase {
   @Inject(EmailRepository)
   private emailRepository: EmailRepository;
 
-  execute(sendEmailDto: SendEmailDto) {
-    return this.emailRepository.create(sendEmailDto);
+  async execute(sendEmailDto: SendEmailDto) {
+    const lastEmail = await this.emailRepository.findLast(sendEmailDto.idFromUser);
+    let isSpam = false;
+
+    if (lastEmail) {
+      const currentDate = new Date();
+      const emailSentDate = new Date(lastEmail.created_at);
+
+      const fiveMinutesInMilliseconds = 5 * 60 * 1000;
+
+      if (currentDate.getTime() - emailSentDate.getTime() < fiveMinutesInMilliseconds) isSpam = true;
+    }
+
+    return this.emailRepository.create({ ...sendEmailDto, spam: isSpam });
   }
 }

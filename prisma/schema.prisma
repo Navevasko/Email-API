@@ -30,8 +30,8 @@ model User {
   theme    Themes @default(LIGHT)
 
   // Relações
-  received_emails Email_User[] @relation("email_correspondants")
-  sent_emails     Email[]      @relation("email_sender")
+  sent_emails    Email[] @relation("email_sender")
+  receive_emails Email[] @relation("email_receiver")
 
   // Timestamps
   created_at  DateTime  @default(now())
@@ -55,39 +55,23 @@ model Email {
   para              String    @default("")
   cc                String    @default("")
   bcc               String    @default("")
+  spam              Boolean   @default(false)
+  isFavorited       Boolean   @default(false)
 
-  idUser Int
-  from   User @relation("email_sender", fields: [idUser], references: [id])
+  idFromUser Int
+  from       User @relation("email_sender", fields: [idFromUser], references: [id])
+
+  idToUser Int
+  to       User @relation("email_receiver", fields: [idToUser], references: [id])
 
   // Timestamps
   created_at  DateTime  @default(now())
   updated_at  DateTime? @updatedAt()
   finished_at DateTime?
-
-  Email_User Email_User[] @relation("email_correspondants")
 }
 
 enum EMAIL_SEND_TYPE {
   TO
   CC
   CCO
-}
-
-model Email_User {
-  id          Int             @id @default(autoincrement())
-  type        EMAIL_SEND_TYPE @default(TO)
-  isFavorited Boolean         @default(false)
-
-  // FK
-  idEmail Int
-  idUser  Int
-
-  // Relações
-  email Email @relation("email_correspondants", fields: [idEmail], references: [id])
-  user  User  @relation("email_correspondants", fields: [idUser], references: [id])
-
-  // Timestamps
-  created_at  DateTime  @default(now())
-  updated_at  DateTime? @updatedAt()
-  finished_at DateTime?
 }

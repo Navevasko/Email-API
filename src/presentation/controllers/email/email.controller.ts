@@ -37,8 +37,9 @@ export class EmailController {
   }
 
   @Get('/received/:id')
-  findReceived(@Param('id') id: string) {
-    return this.favoriteReceivedEmailUsecase.execute(+id);
+  findReceived(@Param('id') id: string, @Query('isFavorited') isFavorited: string) {
+    const isFavoritedBool = isFavorited === 'true';
+    return this.favoriteReceivedEmailUsecase.execute(+id, isFavoritedBool);
   }
 
   @Delete(':id')
@@ -48,7 +49,7 @@ export class EmailController {
   }
 
   @Patch(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   async favorite(@Param('id') id: string, @Body('isFavorited') isFavorited: boolean) {
     await this.favoriteEmailUsecase.execute(+id, isFavorited);
   }

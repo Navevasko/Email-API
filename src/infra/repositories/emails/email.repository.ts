@@ -7,23 +7,25 @@ import { Prisma } from '@prisma/client';
 export class EmailRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createEmailDto: SendEmailDto) {
-    const payload: Prisma.EmailCreateInput = {
-      ...createEmailDto,
-      from: {
-        connect: {
-          id: createEmailDto.to
-        }
-      }
-    };
-
+  async create(createEmailDto: any) {
     return await this.prisma.email.create({
-      data: payload
+      data: createEmailDto
+    });
+  }
+
+  async findLast(idFromUser: number) {
+    return await this.prisma.email.findFirst({
+      where: {
+        idFromUser: idFromUser
+      },
+      orderBy: {
+        created_at: 'desc'
+      }
     });
   }
 
   async findAll(userId: number) {
-    const where: Prisma.EmailWhereInput = userId ? { idUser: userId } : {};
+    const where: Prisma.EmailWhereInput = userId ? { idFromUser: userId } : {};
 
     return await this.prisma.email.findMany({
       where
@@ -43,20 +45,21 @@ export class EmailRepository {
   }
 
   async favorite(id: number, isFavorited: boolean) {
-    return await this.prisma.email_User.update({
+    return await this.prisma.email.update({
       where: { id: id },
       data: { isFavorited: isFavorited }
     });
   }
 
-  async findAllReceived(userId: number) {
-    const where: Prisma.Email_UserWhereInput = { user: { id: userId } };
+  async findAllReceived(userId: number, isFavorited?: boolean) {
+    const where: any = { idToUser: userId };
 
-    return await this.prisma.email_User.findMany({
-      where,
-      include: {
-        email: true
-      }
+    if (isFavorited !== undefined) {
+      where.isFavorited = isFavorited;
+    }
+
+    return await this.prisma.email.findMany({
+      where
     });
   }
 }
